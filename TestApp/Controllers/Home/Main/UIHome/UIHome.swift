@@ -113,9 +113,12 @@ class UIHome {
         locationList.layer.shadowRadius = 8
         locationList.layer.shadowOpacity = 0.15
         locationList.layer.shadowOffset = CGSize(width: 0, height: 0)
+        locationList.isHidden = true
         return locationList
     }()
     
+    var locationsListYAnchor = NSLayoutConstraint()
+    var locationsListTopAnchor = NSLayoutConstraint()
     
    
     //========================
@@ -261,6 +264,7 @@ class UIHome {
         controller.view.addSubview(scrollView)
         
         controller.view.addSubview(locationsListWrap)
+        controller.view.addSubview(locationsList)
         
         statusBarView.topAnchor.constraint(equalTo: controller.view.topAnchor).isActive = true
         statusBarView.leadingAnchor.constraint(equalTo: controller.view.leadingAnchor).isActive = true
@@ -296,6 +300,13 @@ class UIHome {
         locationsListWrap.leftAnchor.constraint(equalTo: controller.view.leftAnchor).isActive = true
         locationsListWrap.rightAnchor.constraint(equalTo: controller.view.rightAnchor).isActive = true
         locationsListWrap.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor).isActive = true
+        
+        locationsList.leftAnchor.constraint(equalTo: controller.view.leftAnchor, constant: 30).isActive = true
+        locationsList.rightAnchor.constraint(equalTo: controller.view.rightAnchor, constant: -30).isActive = true
+        locationsListYAnchor = locationsList.centerYAnchor.constraint(equalTo: controller.view.centerYAnchor, constant: UIScreen.main.bounds.height)
+        locationsListYAnchor.isActive = true
+        locationsListTopAnchor = locationsList.topAnchor.constraint(equalTo: controller.view.topAnchor, constant: UIScreen.main.bounds.height)
+        locationsListTopAnchor.isActive = true
         
         circleButtons.topAnchor.constraint(equalTo: headView.bottomAnchor, constant: -(CircleButtons.circleHeight / 2)).isActive = true
         circleButtons.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true

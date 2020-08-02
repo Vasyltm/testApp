@@ -10,7 +10,7 @@ import UIKit
 
 class CustomTabBarController: UITabBarController {
     
-    let coustmeTabBarView:UIView = {
+    let custmTabBarView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .white
         if #available(iOS 11.0, *) {
@@ -31,7 +31,7 @@ class CustomTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(coustmeTabBarView)
+        view.addSubview(custmTabBarView)
         view.bringSubviewToFront(tabBar)
         
         tabBar.tintColor = UICommon.colorBlue
@@ -48,15 +48,16 @@ class CustomTabBarController: UITabBarController {
     override func viewWillLayoutSubviews() {
         super .viewWillLayoutSubviews()
         
-          self.view.layoutIfNeeded()
+        self.view.layoutIfNeeded()
+  
         if #available(iOS 11.0, *) {
         } else {
-            coustmeTabBarView.roundCorners(cornerRadius: Double(UICommon.cornerRadius), cornerOne: .topLeft, cornerTwo: .topRight)
+            custmTabBarView.roundCorners(cornerRadius: Double(UICommon.cornerRadius), cornerOne: .topLeft, cornerTwo: .topRight)
         }
         
-        coustmeTabBarView.frame = tabBar.frame
-        coustmeTabBarView.frame.size.height = tabBar.frame.size.height + 10
-        coustmeTabBarView.frame.origin.y = tabBar.frame.origin.y - 10
+        custmTabBarView.frame = tabBar.frame
+        custmTabBarView.frame.size.height = tabBar.frame.size.height + 10
+        custmTabBarView.frame.origin.y = tabBar.frame.origin.y - 10
       
         
         guard tabBar.items != nil else {

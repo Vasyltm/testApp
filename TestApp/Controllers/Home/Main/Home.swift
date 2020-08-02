@@ -70,7 +70,6 @@ class Home: UIViewController {
         
         navigationController?.navigationBar.isHidden = true
         let nav = self.navigationController?.navigationBar
-        nav?.barStyle = UIBarStyle.black
         nav?.barTintColor = UICommon.colorBlue
         nav?.backgroundColor = UICommon.colorBlue
         nav?.isTranslucent = false
@@ -134,7 +133,6 @@ class Home: UIViewController {
 
 extension Home: CircleButtonsDelegate {
     
-    
     func navigate(index: Int) {
         if let controller = circleButtons[index].pushToController {
             self.navigationController?.pushViewController(controller, animated: false)
@@ -159,7 +157,7 @@ extension Home: OverviewsDelegate {
 
 extension Home: LocationsListDelegate {
     
-
+    
     func selectLocationFromList(index: Int) {
         self.object.buttonLocation.setTitle(self.locations[index], for: .normal)
         hideLocationList()
@@ -167,10 +165,15 @@ extension Home: LocationsListDelegate {
     
     
     private func hideLocationList() {
-        UIView.animate(withDuration: 0.7) {
-            self.object.locationsListWrap.layer.opacity = 0
-            self.object.locationsList.removeFromSuperview()
+        
+        UIView.animate(withDuration: 0.7) { [unowned self] in
+            
+            self.object.locationsListYAnchor.constant = UIScreen.main.bounds.height
+            self.object.locationsListTopAnchor.constant = UIScreen.main.bounds.height
+            self.object.locationsList.isHidden = true
+            self.view.layoutIfNeeded()
             self.tabBarController?.tabBar.isUserInteractionEnabled = true
+            self.object.locationsListWrap.layer.opacity = 0
         }
     }
     
@@ -180,18 +183,11 @@ extension Home: LocationsListDelegate {
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
         tabBarController?.tabBar.isUserInteractionEnabled = false
         
-        self.object.locationsList.frame = CGRect(x: 30, y: 1000, width: UICommon.screenWidth - 60, height: 400)
-        self.view.addSubview(object.locationsList)
-        
-        self.object.locationsList.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.object.locationsList.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.object.locationsList.bottomAnchor.constraint(equalTo: self.tabBarController?.tabBar.topAnchor ?? self.view.bottomAnchor, constant: -50).isActive = true
-        let yAnchor = object.locationsList.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -400)
-        yAnchor.isActive = true
-
-        UIView.animate(withDuration: 0.7) {
+        UIView.animate(withDuration: 0.7) { [unowned self] in
             self.object.locationsListWrap.layer.opacity = 0.4
-            yAnchor.constant = 0
+            self.object.locationsList.isHidden = false
+            self.object.locationsListYAnchor.constant = 0
+            self.object.locationsListTopAnchor.constant = 80
             self.view.layoutIfNeeded()
         }
         
@@ -207,7 +203,7 @@ extension Home: LocationsListDelegate {
                     self.object.locationsList.transform = CGAffineTransform(translationX: 0, y: self.viewTranslation.y)
                 })
             case .ended:
-                if viewTranslation.y < 250 {
+                if viewTranslation.y < 210 {
                     UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: { [unowned self] in
                         self.object.locationsList.transform = .identity
                     })
@@ -215,8 +211,7 @@ extension Home: LocationsListDelegate {
                     self.object.locationsList.transform = .identity
                     hideLocationList()
             }
-            default:
-                break
+            default: break
         }
         
     }
